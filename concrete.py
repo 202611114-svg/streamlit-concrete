@@ -11,36 +11,36 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. 공사장 + 공학 느낌의 커스텀 CSS 스타일 정의
+# 2. 인더스트리얼 대시보드 전용 고급 CSS 스타일 정의
 st.markdown("""
     <style>
-    /* 전체 배경 및 폰트 스타일 조정 */
+    /* 배경이 허전하지 않도록 은은한 엔지니어링 모눈/그리드 배경 효과 적용 */
     .stApp {
-        background-color: #F8F9FA;
+        background-color: #F4F6F7;
+        background-image: linear-gradient(#E5E8E8 1px, transparent 1px), linear-gradient(90deg, #E5E8E8 1px, transparent 1px);
+        background-size: 20px 20px;
     }
     
-    /* 공사장 표지판 스타일의 타이틀 대형 배너 */
+    /* 공사장 표지판 스타일 배너 */
     .construction-banner {
-        background-color: #FFC107; /* 안전 황색 */
+        background-color: #FFC107;
         border: 4px solid #212529;
-        padding: 20px;
-        border-radius: 5px;
+        padding: 18px;
+        border-radius: 6px;
         text-align: center;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+        box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
         margin-bottom: 25px;
         position: relative;
-        overflow: hidden;
     }
-    /* 공사장 스트라이프 느낌의 데코 레이어 (상하단 테두리 효과 대체) */
     .construction-banner::before {
         content: "";
         position: absolute;
-        top: 0; left: 0; right: 0; height: 8px;
+        top: 0; left: 0; right: 0; height: 6px;
         background: repeating-linear-gradient(-45deg, #212529, #212529 10px, #FFC107 10px, #FFC107 20px);
     }
     
     .main-title {
-        font-size: 26px;
+        font-size: 25px;
         font-weight: 900;
         color: #212529;
         margin: 5px 0 2px 0;
@@ -50,60 +50,70 @@ st.markdown("""
         font-size: 13px;
         font-weight: bold;
         color: #495057;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
     }
     
-    /* 섹션 헤더 스타일 (공학 계측 패널 느낌) */
+    /* 입력 컴포넌트가 배치되는 제어 패널 구역 정의 (허전함 채우기 스킨) */
+    .control-panel {
+        background-color: #FFFFFF;
+        border: 2px solid #BDC3C7;
+        border-top: 5px solid #34495E;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    
     .panel-header {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: bold;
-        color: #343A40;
-        border-left: 5px solid #212529;
-        padding-left: 10px;
-        margin-top: 20px;
+        color: #2C3E50;
         margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
     
-    /* 결과 출력 박스 (공사장 안내판 커스텀) */
+    /* 판정 결과 박스 */
     .result-box {
-        padding: 22px;
+        padding: 20px;
         border-radius: 6px;
         text-align: center;
         font-weight: bold;
         font-size: 22px;
-        margin-top: 25px;
+        margin-top: 20px;
         border: 3px solid;
-        box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
     }
     
-    /* 에러/알림 스타일 커스텀 */
+    /* 계측 개시 버튼 커스텀 */
     .stButton>button {
-        background-color: #343A40 !important; /* 인더스트리얼 다크 그레이 */
-        color: #FFC107 !important; /* 황색 글씨 */
+        background-color: #2C3E50 !important; /* 강인한 다크 네이비 테마 */
+        color: #FFC107 !important; 
         font-weight: bold !important;
-        border: 2px solid #212529 !important;
-        height: 45px;
+        border: 2px solid #1A252F !important;
+        height: 48px;
         font-size: 16px !important;
-        transition: all 0.3s ease;
+        border-radius: 6px !important;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
     }
     .stButton>button:hover {
-        background-color: #212529 !important;
+        background-color: #1A252F !important;
         color: #FFFFFF !important;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        box-shadow: 0px 5px 12px rgba(0,0,0,0.2);
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 상단 공사장 표지판 배너 렌더링
+# 상단 배너 표시
 st.markdown('''
     <div class="construction-banner">
-        <div class="main-title">🚧 CONCRETE SAFETY SYSTEM 🚧</div>
-        <div class="sub-title">[ 구조물 콘크리트 배합 안전성 AI 실시간 계측기 ]</div>
+        <div class="main-title">🚧 CONCRETE SAFETY SYSTEM V2 🚧</div>
+        <div class="sub-title">[ 구조물 콘크리트 배합 안전성 AI 실시간 계측 모니터 ]</div>
     </div>
 ''', unsafe_allow_html=True)
 
-# 3. 모델 파일 로드
+# 모델 로드 디렉토리 체크
 model_path = 'concrete_model.pkl'
 
 @st.cache_resource
@@ -116,69 +126,68 @@ def load_model():
 rf_model = load_model()
 
 if rf_model is None:
-    st.error(f"❌ 시스템 오류: 폴더 내에 '{model_path}' 파일이 존재하지 않습니다. 인프라 경로를 확인하세요.")
+    st.error(f"❌ 인프라 연동 실패: 폴더 내에 '{model_path}' 파일이 누락되었습니다. 경로를 재정비하세요.")
 else:
-    # 4. 입력 패널 구성
-    st.markdown('<div class="panel-header">⚙️ DATA INPUT PANEL (배합 성분 입력)</div>', unsafe_allow_html=True)
+    # 3. 데이터 입력 패널 내부 구성을 전용 컨테이너와 슬라이더(막대)로 배치
+    st.markdown('<div class="control-panel">', unsafe_allow_html=True)
+    st.markdown('<div class="panel-header">⚙️ CONTROL CONSOLE (막대를 조절하여 배합비를 맞추세요)</div>', unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    # 편의성을 위해 슬라이더(st.slider) 장착 및 현실적인 범위 지정
+    cement = st.slider("🏗️ 시멘트 배합량 (Cement, kg/m³)", min_value=100.0, max_value=600.0, value=250.0, step=5.0)
+    water = st.slider("💧 배합수량 (Water, kg/m³)", min_value=120.0, max_value=250.0, value=180.0, step=2.0)
+    age = st.slider("📅 구조물 양생기간 (Age, day)", min_value=1, max_value=100, value=28, step=1)
     
-    with col1:
-        cement = st.number_input("🏗️ 시멘트량 (Cement)", min_value=0.0, max_value=1000.0, value=250.0, step=10.0, help="단위: kg/m³")
-    with col2:
-        water = st.number_input("💧 배합수량 (Water)", min_value=0.0, max_value=500.0, value=180.0, step=5.0, help="단위: kg/m³")
-    with col3:
-        age = st.number_input("📅 양생기간 (Age)", min_value=1, max_value=365, value=28, step=1, help="단위: 일(day)")
-
+    st.markdown('</div>', unsafe_allow_html=True) # 패널 닫기
+    
     st.write("")
     
-    # 5. 계측 프로세스 작동 버튼
-    if st.button("⚙️ AI 정밀 안전성 계측 개시", use_container_width=True):
+    # 4. 분석 연산 가동 버튼
+    if st.button("⚙️ 시스템 가동: AI 정밀 안전 계측", use_container_width=True):
         
-        # 모델의 피처 형태와 순서(3개 변수)에 맞춘 데이터프레임 구조 생성
+        # 모델의 피처 컬럼 규격과 정확히 일치시킴
         input_data = pd.DataFrame(
             [[cement, water, age]],
             columns=['시멘트', '물', '양생기간']
         )
         
         try:
-            # 모델 예측 및 확률 추출
+            # 안전/불안전 확률 집계
             probabilities = rf_model.predict_proba(input_data)[0]
             
-            prob_unsafe = probabilities[0] * 100  # 0 클래스(불안전) 확률
-            prob_safe = probabilities[1] * 100    # 1 클래스(안전) 확률
+            prob_unsafe = probabilities[0] * 100
+            prob_safe = probabilities[1] * 100
             
-            # 확률 분포에 따라 공사장 위험/안전 색상 매칭
+            # 위험도 분기처리 스킨 컬러 맵
             if prob_safe >= prob_unsafe:
-                status = "안전 (SAFE)"
+                status = "안전 보증 (SAFE)"
                 confidence = prob_safe
-                box_color = "#E8F8F5"  # 은은한 산업용 그린
-                text_color = "#0E6251"
-                border_color = "#117A65"
+                box_color = "#EAFAF1"  
+                text_color = "#145A32"
+                border_color = "#27AE60"
             else:
-                status = "위험/불안전 (DANGER)"
+                status = "구조 위험 (DANGER)"
                 confidence = prob_unsafe
-                box_color = "#FADBD8"  # 신호등 정지/위험 적색
+                box_color = "#FDEDEC"  
                 text_color = "#78281F"
-                border_color = "#943126"
+                border_color = "#E74C3C"
                 
-            # 6. 결과 출력 인터페이스
+            # 5. 시각 결과 패널 출력
             st.markdown(f'''
                 <div class="result-box" style="background-color: {box_color}; color: {text_color}; border-color: {border_color};">
-                    👷 AI 분석 판정: {status}<br>
-                    <span style="font-size: 16px; font-weight: normal; color: #5D6D7E;">(해당 클래스 판정 신뢰도: {confidence:.2f}%)</span>
+                    👷 AI 구조 판정: {status}<br>
+                    <span style="font-size: 15px; font-weight: normal; color: #7F8C8D;">(종합 판정 신뢰 확률: {confidence:.2f}%)</span>
                 </div>
             ''', unsafe_allow_html=True)
             
-            # 하단에 시스템 게이지 스타일로 프로그레스 바 배치
+            # 6. 하단 게이지 차트 분석 영역
             st.write("")
-            st.markdown('<div class="panel-header">📊 ANALYSIS REPORT (계측 분석 로그)</div>', unsafe_allow_html=True)
+            st.markdown('<strong>📊 REAL-TIME CORE LOG (실시간 계측 로그 수치)</strong>', unsafe_allow_html=True)
             
-            st.text(f"🟢 안전성 확보 지수 (Safe Probability): {prob_safe:.1f}%")
+            st.text(f"🟢 안전성 확보 비율 (Safe Index): {prob_safe:.1f}%")
             st.progress(int(prob_safe))
             
-            st.text(f"🔴 균열 및 위험 지수 (Unsafe Probability): {prob_unsafe:.1f}%")
+            st.text(f"🔴 균열 및 위험 우려도 (Unsafe Index): {prob_unsafe:.1f}%")
             st.progress(int(prob_unsafe))
             
         except Exception as e:
-            st.error(f"⚠️ 계측 장치 모듈 작동 오류: {e}")
+            st.error(f"⚠️ 시스템 경보 - 계측 연산 에러: {e}")
