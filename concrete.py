@@ -6,7 +6,7 @@ import os
 
 # 1. 페이지 제목 및 레이아웃 설정
 st.set_page_config(
-    page_title="콘크리트 안전성 AI 계측 시스템",
+    page_title="콘크리트 안전성 계측 시스템",
     page_icon="🚧",
     layout="centered"
 )
@@ -174,7 +174,7 @@ else:
             # 5. 시각 결과 패널 출력
             st.markdown(f'''
                 <div class="result-box" style="background-color: {box_color}; color: {text_color}; border-color: {border_color};">
-                    👷 AI 구조 판정: {status}<br>
+                    👷 구조 판정: {status}<br>
                     <span style="font-size: 15px; font-weight: normal; color: #7F8C8D;">(종합 판정 신뢰 확률: {confidence:.2f}%)</span>
                 </div>
             ''', unsafe_allow_html=True)
